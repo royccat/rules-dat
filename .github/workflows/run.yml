@@ -147,16 +147,16 @@ jobs:
         env:
           SED: grep DOMAIN | grep -v "#" | sed 's/  - DOMAIN,/full:/g' | sed 's/  - DOMAIN-SUFFIX,//g' | sed 's/  - DOMAIN-KEYWORD,/keyword:/g'
         run: |
-          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/Baidu/Baidu.yaml | ${{ env.SED }} > ./data-replace/baidu
-          mv ./data-replace/baidu ./community/data/baidu
+          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/Baidu/Baidu.yaml | ${{ env.SED }} > ./baidu-ext
+          mv ./baidu-ext ./community/data/baidu
 
       - name: replace 'ios_rule_script/OpenAI'
         env:
           SED: grep DOMAIN | grep -v "#" | sed 's/  - DOMAIN,/full:/g' | sed 's/  - DOMAIN-SUFFIX,//g' | sed 's/  - DOMAIN-KEYWORD,/keyword:/g'
         run: |
-          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/OpenAI/OpenAI.yaml | ${{ env.SED }} > ./data-replace/openai
-          echo "full:o33249.ingest.sentry.io" >>  ./data-replace/openai
-          mv ./data-replace/openai ./community/data/openai
+          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/OpenAI/OpenAI.yaml | ${{ env.SED }} > ./openai-ext
+          echo "full:o33249.ingest.sentry.io" >>  ./openai-ext
+          mv ./openai-ext ./community/data/openai
 
       - name: Add data for `meta`
         env:
