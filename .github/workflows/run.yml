@@ -143,6 +143,21 @@ jobs:
           while read line; do grep -q "$line @cn" ./community/data/steam || sed -i "/$line/ s/$/ @cn/" ./community/data/steam; done < steamcn.txt
           cat ./community/data/steam
 
+      - name: replace 'ios_rule_script/Baidu'
+        env:
+          SED: grep DOMAIN | grep -v "#" | sed 's/  - DOMAIN,/full:/g' | sed 's/  - DOMAIN-SUFFIX,//g' | sed 's/  - DOMAIN-KEYWORD,/keyword:/g'
+        run: |
+          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/Baidu/Baidu.yaml | ${{ env.SED }} > ./data-replace/baidu
+          mv ./data-replace/baidu ./community/data/baidu
+
+      - name: replace 'ios_rule_script/OpenAI'
+        env:
+          SED: grep DOMAIN | grep -v "#" | sed 's/  - DOMAIN,/full:/g' | sed 's/  - DOMAIN-SUFFIX,//g' | sed 's/  - DOMAIN-KEYWORD,/keyword:/g'
+        run: |
+          curl -sSL https://github.com/blackmatrix7/ios_rule_script/raw/master/rule/Clash/OpenAI/OpenAI.yaml | ${{ env.SED }} > ./data-replace/openai
+          echo "full:o33249.ingest.sentry.io" >>  ./data-replace/openai
+          mv ./data-replace/openai ./community/data/openai
+
       - name: Add data for `meta`
         env:
           SED: sed '/^\s*#/d' | sed 's/^PROCESS-NAME,//' | sed 's/DOMAIN,/full:/g' | sed 's/DOMAIN-SUFFIX,//g' | sed 's/DOMAIN-KEYWORD,/keyword:/g' | sed '/^\s*IP-CIDR/d'
